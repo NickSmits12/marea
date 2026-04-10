@@ -1,0 +1,218 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --cream: #FAF7F2;
+  --olive: #5C6B3A;
+  --sienna: #E07B39;
+  --espresso: #2C1A0E;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #FAF7F2;
+  color: #2C1A0E;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Menu photo cards — photo zoom via group-hover ── */
+/* (hover handled by Tailwind group-hover classes in component) */
+
+/* ─── Scroll reveal ───────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity, transform;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─── Gallery items ───────────────────────────────── */
+.gallery-item {
+  overflow: hidden;
+  position: relative;
+}
+.gallery-item img,
+.gallery-item .gallery-bg {
+  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.gallery-item:hover .gallery-bg {
+  transform: scale(1.07);
+}
+.gallery-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(44, 26, 14, 0.55);
+  opacity: 0;
+  transition: opacity 0.45s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.gallery-item:hover .gallery-overlay {
+  opacity: 1;
+}
+
+/* ─── Skeleton shimmer (light on dark bg) ─────────── */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(250, 247, 242, 0.06) 25%,
+    rgba(250, 247, 242, 0.13) 50%,
+    rgba(250, 247, 242, 0.06) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+/* ─── Tab underline ───────────────────────────────── */
+.tab-btn {
+  position: relative;
+  padding-bottom: 6px;
+}
+.tab-btn::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--sienna);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.3s ease;
+}
+.tab-btn.active::after {
+  transform: scaleX(1);
+}
+
+/* ─── Scroll indicator ────────────────────────────── */
+@keyframes bounceDot {
+  0%, 100% { transform: translateY(0); opacity: 1; }
+  50% { transform: translateY(10px); opacity: 0.5; }
+}
+.scroll-dot {
+  animation: bounceDot 1.8s ease-in-out infinite;
+}
+
+/* ─── Step progress connector ─────────────────────── */
+.step-connector {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--olive), rgba(92, 107, 58, 0.3));
+}
+
+/* ─── Number counter ──────────────────────────────── */
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.count-visible {
+  animation: countUp 0.6s ease forwards;
+}
+
+/* ─── Navbar transition ───────────────────────────── */
+.navbar-frosted {
+  background: rgba(250, 247, 242, 0.90);
+  backdrop-filter: blur(20px) saturate(1.2);
+  -webkit-backdrop-filter: blur(20px) saturate(1.2);
+  border-bottom: 1px solid rgba(92, 107, 58, 0.14);
+  box-shadow: 0 2px 32px rgba(44, 26, 14, 0.08);
+}
+
+/* Fade-in the frosted bg pseudo-layer */
+.navbar-frosted::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(250, 247, 242, 0.06);
+  animation: navFadeIn 0.4s ease forwards;
+}
+@keyframes navFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ─── Mobile menu ─────────────────────────────────── */
+.mobile-menu {
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.mobile-menu.open {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
+}
+.mobile-menu.closed {
+  opacity: 0;
+  transform: translateY(-8px);
+  pointer-events: none;
+}
+
+/* ─── Reservation time slot ───────────────────────── */
+.time-slot {
+  transition: all 0.2s ease;
+}
+.time-slot.selected {
+  background: var(--olive);
+  color: var(--cream);
+  border-color: var(--olive);
+}
+
+/* ─── Calendar day ────────────────────────────────── */
+.cal-day {
+  transition: all 0.18s ease;
+}
+.cal-day:hover:not(.disabled):not(.selected) {
+  background: rgba(92, 107, 58, 0.12);
+  color: var(--olive);
+}
+.cal-day.selected {
+  background: var(--olive);
+  color: var(--cream);
+}
+.cal-day.disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+/* ─── Menu card appear animation ─────────────────── */
+@keyframes cardAppear {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-appear {
+  animation: cardAppear 0.55s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+/* ─── Hide scrollbar (tab overflow on mobile) ────── */
+.scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+/* ─── Ingredient tag chips ────────────────────────── */
+.ingredient-tag {
+  font-size: 0.65rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
